@@ -1,8 +1,8 @@
 // 等待DOM完全加载
 document.addEventListener('DOMContentLoaded', function() {
   // 密码哈希验证 - 增强安全性
-  // 对应密码"love"，请更换为您自己的密码哈希
-  const PASSWORD_HASH = 'SjVVMUpVRTVKVEpVRTVKVEVGSlVKRQ==';
+  // 已修正密码"love"的哈希值
+  const PASSWORD_HASH = 'Ykc5MlpxJTNEJTNE';
   
   // DOM元素
   const passwordScreen = document.getElementById('password-screen');
