@@ -1,63 +1,73 @@
-@layer utilities {
-  .text-shadow {
+/* 自定义工具类 */
+.text-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  .heart-beat {
+}
+
+.heart-beat {
     animation: heartbeat 1.5s ease-in-out infinite;
-  }
-  .fade-in {
+}
+
+.fade-in {
     animation: fadeIn 1s ease-in-out;
-  }
-  .photo-hover {
+}
+
+.photo-hover {
     transition: all 0.3s ease;
-  }
-  .photo-hover:hover {
+}
+
+.photo-hover:hover {
     transform: scale(1.05) rotate(2deg);
     z-index: 10;
-  }
-  .btn-press {
+}
+
+.btn-press {
     transform: scale(0.95);
-  }
-  .float {
+}
+
+.float {
     animation: float 6s ease-in-out infinite;
-  }
-  .letter-appear {
+}
+
+.letter-appear {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .letter-appear.active {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
+.letter-appear.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 动画定义 */
 @keyframes heartbeat {
-  0% { transform: scale(1); }
-  14% { transform: scale(1.1); }
-  28% { transform: scale(1); }
-  42% { transform: scale(1.1); }
-  70% { transform: scale(1); }
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-  20%, 40%, 60%, 80% { transform: translateX(5px); }
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
 }
 
 .animate-shake {
-  animation: shake 0.5s ease-in-out;
+    animation: shake 0.5s ease-in-out;
 }
-    
+
+/* Tailwind 配置扩展 - 在HTML中通过script配置 */
+/* 自定义颜色和字体已在HTML的tailwind配置中定义 */
