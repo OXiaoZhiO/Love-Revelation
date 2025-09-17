@@ -1,171 +1,149 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>给你的情书</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <script>
-    // Tailwind配置
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            love: {
-              light: '#FFD1DC',
-              DEFAULT: '#FF69B4',
-              dark: '#C71585',
-              purple: '#DDA0DD',
-              deep: '#8A2BE2'
-            }
-          },
-          fontFamily: {
-            romantic: ['"Dancing Script"', 'cursive', 'sans-serif'],
-            main: ['"Noto Serif SC"', 'serif']
-          }
-        }
-      }
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给你的情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gradient-to-br from-love-light to-love-purple min-h-screen font-main text-gray-800 overflow-x-hidden">
-  <!-- 漂浮爱心装饰 -->
-  <div id="floating-hearts" class="fixed inset-0 pointer-events-none z-30"></div>
+    <!-- 漂浮爱心装饰容器 -->
+    <div id="floating-hearts" class="fixed inset-0 pointer-events-none z-30"></div>
 
-  <!-- 密码验证界面 -->
-  <div id="password-screen" class="min-h-screen flex items-center justify-center p-4 z-50">
-    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md transform transition-all duration-500">
-      <div class="text-center mb-8">
-        <i class="fa fa-heart text-love text-5xl heart-beat mb-4"></i>
-        <h1 class="font-romantic text-4xl text-love-dark">一封情书</h1>
-        <p class="text-gray-600 mt-2">请输入密码解锁</p>
-      </div>
-      
-      <form id="password-form" class="space-y-4">
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
-          <div class="relative">
-            <input type="password" id="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-love focus:border-love transition-all outline-none" placeholder="请输入访问密码">
-            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-love transition-colors cursor-pointer">
-              <i class="fa fa-eye-slash"></i>
+    <!-- 密码验证界面 -->
+    <div id="password-screen" class="min-h-screen flex items-center justify-center p-4 z-50">
+        <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-12 w-full max-w-md transform transition-all duration-500">
+            <div class="text-center mb-8">
+                <i class="fa fa-heart text-love text-5xl heart-beat mb-4"></i>
+                <h1 class="font-romantic text-4xl text-love-dark">一封情书</h1>
+                <p class="text-gray-600 mt-2">请输入密码解锁</p>
+            </div>
+            
+            <form id="password-form" class="space-y-4">
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                    <div class="relative">
+                        <input type="password" id="password" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-love focus:border-love transition-all outline-none" placeholder="请输入访问密码">
+                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-love transition-colors cursor-pointer">
+                            <i class="fa fa-eye-slash"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" id="unlock-btn" class="w-full bg-love hover:bg-love-dark text-white font-medium py-3 px-4 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg">
+                    解锁情书
+                </button>
+                <p id="error-message" class="text-red-500 text-sm text-center hidden">密码错误，请重试</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主内容区 - 默认隐藏 -->
+    <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
+        <!-- 音乐控制 -->
+        <div class="fixed top-4 right-4 z-40 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg">
+            <button id="music-toggle" class="text-love hover:text-love-dark transition-colors p-2 cursor-pointer focus:outline-none">
+                <i class="fa fa-music text-xl"></i>
             </button>
-          </div>
+            <audio id="background-music" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                您的浏览器不支持音频播放
+            </audio>
         </div>
-        <button type="submit" id="unlock-btn" class="w-full bg-love hover:bg-love-dark text-white font-medium py-3 px-4 rounded-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-md hover:shadow-lg">
-          解锁情书
-        </button>
-        <p id="error-message" class="text-red-500 text-sm text-center hidden">密码错误，请重试</p>
-      </form>
+
+        <!-- 标题区 -->
+        <header class="relative py-20 px-4 text-center overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-love/10 to-transparent"></div>
+                <div class="absolute -top-20 -left-20 w-64 h-64 bg-love/20 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-love-purple/20 rounded-full blur-3xl"></div>
+            </div>
+            <div class="relative z-10 max-w-3xl mx-auto">
+                <h1 class="font-romantic text-[clamp(2.5rem,8vw,4.5rem)] text-love-dark mb-4 text-shadow fade-in">给我最爱的人</h1>
+                <div class="w-32 h-1 bg-love mx-auto my-6 rounded-full fade-in" style="animation-delay: 0.3s"></div>
+                <p class="text-lg md:text-xl text-gray-700 fade-in" style="animation-delay: 0.6s">一封迟到却饱含深情的信</p>
+            </div>
+        </header>
+
+        <!-- 照片墙 -->
+        <section class="py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="font-romantic text-[clamp(1.8rem,5vw,3rem)] text-love-dark text-center mb-12 scroll-reveal">我们的回忆</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- 照片墙图片 -->
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-1 scroll-reveal" data-delay="100">
+                        <img src="https://picsum.photos/seed/love1/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-2 mt-4 scroll-reveal" data-delay="200">
+                        <img src="https://picsum.photos/seed/love2/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-3 mt-2 scroll-reveal" data-delay="300">
+                        <img src="https://picsum.photos/seed/love3/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-1 mt-6 scroll-reveal" data-delay="400">
+                        <img src="https://picsum.photos/seed/love4/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-3 mt-2 scroll-reveal" data-delay="500">
+                        <img src="https://picsum.photos/seed/love5/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-2 mt-4 scroll-reveal" data-delay="600">
+                        <img src="https://picsum.photos/seed/love6/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-1 scroll-reveal" data-delay="700">
+                        <img src="https://picsum.photos/seed/love7/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-md photo photo-hover transform rotate-3 mt-3 scroll-reveal" data-delay="800">
+                        <img src="https://picsum.photos/seed/love8/500/500" alt="我们的回忆照片" class="w-full h-48 md:h-64 object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 情书内容 -->
+        <section class="py-16 px-4 bg-white/60 backdrop-blur-sm">
+            <div class="max-w-3xl mx-auto">
+                <h2 class="font-romantic text-[clamp(1.8rem,5vw,3rem)] text-love-dark text-center mb-12 scroll-reveal">给你的情书</h2>
+                
+                <div class="bg-white/80 rounded-2xl p-8 md:p-10 shadow-xl relative scroll-reveal">
+                    <div class="absolute -top-4 -left-4 text-love text-4xl opacity-30 float">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 text-love text-4xl opacity-30 float" style="animation-delay: 2s">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    
+                    <div id="love-letter" class="font-main text-lg leading-relaxed space-y-6">
+                        <p class="letter-appear">我最亲爱的：</p>
+                        
+                        <p class="letter-appear">当你看到这封信的时候，或许我正怀着忐忑又期待的心情想着你。不知道从什么时候开始，我的生活里多了一个你，一个让我牵挂、让我心动的你。</p>
+                        
+                        <p class="letter-appear">和你在一起的每一天，都像是生命中最美好的礼物。记得我们第一次见面的场景，你的笑容像阳光一样温暖，瞬间照亮了我的整个世界。从那以后，我的目光就再也无法从你身上移开。</p>
+                        
+                        <p class="letter-appear">我们一起经历的点点滴滴，无论是欢笑还是泪水，都已成为我心中最珍贵的回忆。是你让我明白了什么是真正的快乐，什么是被人在乎的感觉。</p>
+                        
+                        <p class="letter-appear">我爱你，不仅因为你的样子，也因为和你在一起时我的样子。我爱你，不仅因为你为我做的事，也因为为了你，我能做成的事。</p>
+                        
+                        <p class="letter-appear">未来的路还很长，我希望能一直牵着你的手，一起看遍世间风景，一起经历人生的起起落落。无论遇到什么困难，我都会在你身边，做你最坚实的依靠。</p>
+                        
+                        <p class="letter-appear">永远爱你的人</p>
+                        
+                        <p class="text-right font-romantic text-2xl text-love-dark mt-8 letter-appear">爱你的我</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部 -->
+        <footer class="py-8 px-4 text-center text-gray-600 scroll-reveal">
+            <p>用我全部的爱 &hearts;</p>
+            <p class="text-sm mt-2">永远属于你</p>
+        </footer>
     </div>
-  </div>
 
-  <!-- 主内容区 - 默认隐藏 -->
-  <div id="main-content" class="hidden opacity-0 transition-opacity duration-1000">
-    <!-- 音乐控制 -->
-    <div class="fixed top-4 right-4 z-40 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg">
-      <button id="music-toggle" class="text-love hover:text-love-dark transition-colors p-2 cursor-pointer focus:outline-none">
-        <i class="fa fa-music text-xl"></i>
-      </button>
-      <audio id="background-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-       您的浏览器不支持音频播放
-      </audio>
-    </div>
-
-    <!-- 标题区 -->
-    <header class="relative py-20 px-4 text-center overflow-hidden">
-      <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-love/10 to-transparent"></div>
-        <div class="absolute -top-20 -left-20 w-64 h-64 bg-love/20 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-love-purple/20 rounded-full blur-3xl"></div>
-      </div>
-      <div class="relative z-10 max-w-3xl mx-auto">
-        <h1 class="font-romantic text-[clamp(2.5rem,8vw,4.5rem)] text-love-dark mb-4 text-shadow fade-in">给我最爱的人</h1>
-        <div class="w-32 h-1 bg-love mx-auto my-6 rounded-full fade-in" style="animation-delay: 0.3s"></div>
-        <p class="text-lg md:text-xl text-gray-700 fade-in" style="animation-delay: 0.6s">一封迟到却饱含深情的信</p>
-      </div>
-    </header>
-
-    <!-- 照片墙 -->
-    <section class="py-16 px-4">
-      <div class="max-w-6xl mx-auto">
-        <h2 class="font-romantic text-[clamp(1.8rem,5vw,3rem)] text-love-dark text-center mb-12 scroll-reveal">我们的回忆</h2>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          <!-- 照片墙图片 -->
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-1 scroll-reveal" data-delay="100">
-            <img src="https://picsum.photos/seed/love1/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-2 mt-4 scroll-reveal" data-delay="200">
-            <img src="https://picsum.photos/seed/love2/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-3 mt-2 scroll-reveal" data-delay="300">
-            <img src="https://picsum.photos/seed/love3/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-1 mt-6 scroll-reveal" data-delay="400">
-            <img src="https://picsum.photos/seed/love4/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-3 mt-2 scroll-reveal" data-delay="500">
-            <img src="https://picsum.photos/seed/love5/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-2 mt-4 scroll-reveal" data-delay="600">
-            <img src="https://picsum.photos/seed/love6/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform -rotate-1 scroll-reveal" data-delay="700">
-            <img src="https://picsum.photos/seed/love7/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-          <div class="rounded-lg overflow-hidden shadow-md photo-hover transform rotate-3 mt-3 scroll-reveal" data-delay="800">
-            <img src="https://picsum.photos/seed/love8/500/500" alt="回忆照片" class="w-full h-48 md:h-64 object-cover">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 情书内容 -->
-    <section class="py-16 px-4 bg-white/60 backdrop-blur-sm">
-      <div class="max-w-3xl mx-auto">
-        <h2 class="font-romantic text-[clamp(1.8rem,5vw,3rem)] text-love-dark text-center mb-12 scroll-reveal">给你的情书</h2>
-        
-        <div class="bg-white/80 rounded-2xl p-8 md:p-10 shadow-xl relative scroll-reveal">
-          <div class="absolute -top-4 -left-4 text-love text-4xl opacity-30 float">
-            <i class="fa fa-heart"></i>
-          </div>
-          <div class="absolute -bottom-4 -right-4 text-love text-4xl opacity-30 float" style="animation-delay: 2s">
-            <i class="fa fa-heart"></i>
-          </div>
-          
-          <div id="love-letter" class="font-main text-lg leading-relaxed space-y-6">
-            <p class="letter-appear">我最亲爱的：</p>
-            
-            <p class="letter-appear">当你看到这封信的时候，或许我正怀着忐忑又期待的心情想着你。不知道从什么时候开始，我的生活里多了一个你，一个让我牵挂、让我心动的你。</p>
-            
-            <p class="letter-appear">和你在一起的每一天，都像是生命中最美好的礼物。记得我们第一次见面的场景，你的笑容像阳光一样温暖，瞬间照亮了我的整个世界。从那以后，我的目光就再也无法从你身上移开。</p>
-            
-            <p class="letter-appear">我们一起经历的点点滴滴，无论是欢笑还是泪水，都已成为我心中最珍贵的回忆。是你让我明白了什么是真正的快乐，什么是被人在乎的感觉。</p>
-            
-            <p class="letter-appear">我爱你，不仅因为你的样子，也因为和你在一起时我的样子。我爱你，不仅因为你为我做的事，也因为为了你，我能做成的事。</p>
-            
-            <p class="letter-appear">未来的路还很长，我希望能一直牵着你的手，一起看遍世间风景，一起经历人生的起起落落。无论遇到什么困难，我都会在你身边，做你最坚实的依靠。</p>
-            
-            <p class="letter-appear">永远爱你的人</p>
-            
-            <p class="text-right font-romantic text-2xl text-love-dark mt-8 letter-appear">爱你的我</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 底部 -->
-    <footer class="py-8 px-4 text-center text-gray-600 scroll-reveal">
-      <p>用我全部的爱 &hearts;</p>
-      <p class="text-sm mt-2">永远属于你</p>
-    </footer>
-  </div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
     
