@@ -1,55 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
+@layer utilities {
+    .content-auto {
+        content-visibility: auto;
+    }
+    .text-shadow {
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .vintage-border {
+        border-image: repeating-linear-gradient(45deg, #D2B48C, #D2B48C 10px, #A0522D 10px, #A0522D 20px) 1;
+    }
+    .paper-texture {
+        background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+        background-color: var(--paper-color);
+    }
+    .envelope-flap {
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
 }
 
-#login-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    text-align: center;
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
-
-#content-container {
-    display: none;
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    max-width: 80%;
-}
-
-input, button {
-    margin: 10px 0;
-    padding: 10px;
-    width: 250px;
-    font-size: 16px;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-#error-message {
-    color: red;
-    margin-top: 10px;
-}
-
-#letter-content {
-    white-space: pre-line;
-    text-align: left;
-    margin-top: 20px;
+.animate-shake {
+    animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
 }
