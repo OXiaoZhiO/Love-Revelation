@@ -3,39 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>私密信件（MD5加密验证）</title>
-    <!-- 引入 MD5 库 -->
-    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5/js/md5.min.js"></script>
-    <!-- 引入 Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 引入 Font Awesome -->
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>私密信件</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-    <!-- 登录容器 -->
-    <div id="login-container" class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md text-center">
-        <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto -mt-16 mb-4">
-            <i class="fa fa-lock text-white text-2xl"></i>
-        </div>
-        <h2 class="text-2xl font-bold mb-6">请输入密码</h2>
-        <div class="mb-4">
-            <input type="password" id="password-input" placeholder="输入密码..." 
-                class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-        </div>
-        <button id="login-button" 
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors duration-300">
-            <i class="fa fa-unlock-alt mr-2"></i>解锁信件
-        </button>
-        <div id="error-message" class="mt-4 text-red-500 min-h-5"></div>
+<body>
+    <div id="login-container">
+        <h1>请输入密码</h1>
+        <input type="password" id="password-input" placeholder="输入密码...">
+        <button id="login-button">进入</button>
+        <div id="error-message"></div>
     </div>
 
-    <!-- 内容容器 -->
-    <div id="content-container" class="hidden bg-white rounded-xl shadow-lg p-8 w-full max-w-2xl max-h-[80vh] overflow-y-auto">
-        <h2 class="text-2xl font-bold mb-6 pb-2 border-b border-gray-200">私密信件</h2>
-        <div id="letter-content" class="whitespace-pre-line text-gray-700 leading-relaxed"></div>
+    <div id="content-container">
+        <h1>私密信件</h1>
+        <div id="letter-content"></div>
     </div>
 
-    <!-- 引入外部 JS -->
     <script src="script.js"></script>
 </body>
 </html>
