@@ -1,122 +1,86 @@
-// 加密后的密码哈希（原始密码：password123）
-// 实际使用时，您应该修改这个哈希值为您自己密码的哈希
-const PASSWORD_HASH = "482C811DA5D5B4BC6D497FFA987E36C5";
-
+// script.js
 document.addEventListener('DOMContentLoaded', function() {
+    // 配置
+    const CORRECT_PASSWORD = '123456'; // 这里替换为你的密码
+    const LETTER_FILE = 'letter.txt';  // 信件内容文件
+    
+    // DOM元素
     const passwordForm = document.getElementById('password-form');
     const passwordInput = document.getElementById('password');
-    const togglePassword = document.getElementById('toggle-password');
+    const toggleVisibilityBtn = document.getElementById('toggle-visibility');
     const errorMessage = document.getElementById('error-message');
-    const submitBtn = document.getElementById('submit-btn');
-    const loader = document.getElementById('loader');
-    const passwordContainer = document.getElementById('password-container');
-    const letterContainer = document.getElementById('letter-container');
+    const loginSection = document.getElementById('login-section');
+    const letterSection = document.getElementById('letter-section');
     const letterContent = document.getElementById('letter-content');
+    const backBtn = document.getElementById('back-btn');
+    const loginBtn = passwordForm.querySelector('.login-btn');
     
-    // 切换密码可见性
-    togglePassword.addEventListener('click', function() {
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
+    // 密码可见性切换
+    toggleVisibilityBtn.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
         
         // 切换图标
-        const icon = togglePassword.querySelector('i');
-        if (type === 'password') {
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
+        this.innerHTML = type === 'password' ? 
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>' : 
+            '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10 10 0 0 1 12 20M16 1.14a10 10 0 0 1 0 17.72"></path><line x1="12" y1="10" x2="12" y2="10"></line></svg>';
     });
     
-    // 密码表单提交
+    // 表单提交处理
     passwordForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         const password = passwordInput.value.trim();
         
-        if (!password) {
-            showError('请输入密码');
-            return;
+        if (password === CORRECT_PASSWORD) {
+            // 密码正确，加载信件内容
+            errorMessage.textContent = '';
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="loading"></span> 加载中...';
+            
+            loadLetterContent();
+        } else {
+            // 密码错误
+            errorMessage.textContent = '密码错误，请重试。';
+            passwordInput.value = '';
+            
+            // 添加抖动动画
+            passwordInput.classList.add('shake');
+            setTimeout(() => {
+                passwordInput.classList.remove('shake');
+            }, 500);
         }
-        
-        // 显示加载状态
-        submitBtn.disabled = true;
-        loader.classList.remove('hidden');
-        
-        // 计算密码哈希
-        const hashedPassword = CryptoJS.MD5(password).toString();
-        
-        // 验证密码
-        setTimeout(function() {
-            if (hashedPassword === PASSWORD_HASH) {
-                // 密码正确，加载信件内容
-                loadLetterContent();
-            } else {
-                // 密码错误
-                showError('密码错误，请重试');
-                submitBtn.disabled = false;
-                loader.classList.add('hidden');
-                passwordInput.value = '';
-                passwordInput.focus();
-            }
-        }, 800);
     });
     
-    // 显示错误消息
-    function showError(message) {
-        const errorText = errorMessage.querySelector('span');
-        errorText.textContent = message;
-        errorMessage.classList.remove('hidden');
-        
-        // 添加抖动动画
-        passwordInput.classList.add('animate-shake');
-        setTimeout(() => {
-            passwordInput.classList.remove('animate-shake');
-        }, 500);
-        
-        // 3秒后自动隐藏错误消息
-        setTimeout(() => {
-            errorMessage.classList.add('hidden');
-        }, 3000);
-    }
+    // 返回按钮
+    backBtn.addEventListener('click', function() {
+        letterSection.classList.remove('active');
+        loginSection.classList.add('active');
+        passwordInput.value = '';
+        loginBtn.disabled = false;
+        loginBtn.textContent = '解锁信件';
+    });
     
     // 加载信件内容
     function loadLetterContent() {
-        fetch('letter.txt')
+        fetch(LETTER_FILE)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('无法加载信件内容');
+                    throw new Error('网络错误');
                 }
                 return response.text();
             })
-            .then(content => {
-                // 显示信件内容
-                displayLetter(content);
+            .then(text => {
+                letterContent.textContent = text;
+                loginSection.classList.remove('active');
+                letterSection.classList.add('active');
             })
             .catch(error => {
-                console.error('加载信件时出错:', error);
-                showError('加载信件内容失败，请稍后重试');
-                submitBtn.disabled = false;
-                loader.classList.add('hidden');
+                console.error('加载信件失败:', error);
+                errorMessage.textContent = '加载信件失败，请稍后重试。';
+                loginBtn.disabled = false;
+                loginBtn.textContent = '解锁信件';
             });
-    }
-    
-    // 显示信件
-    function displayLetter(content) {
-        // 隐藏密码容器
-        passwordContainer.classList.add('opacity-0', 'pointer-events-none');
-        passwordContainer.style.transition = 'opacity 0.5s ease';
-        
-        // 填充信件内容
-        letterContent.textContent = content;
-        
-        // 显示信件容器
-        setTimeout(() => {
-            passwordContainer.classList.add('hidden');
-            letterContainer.classList.remove('hidden');
-            letterContainer.classList.add('fade-in');
-        }, 500);
     }
     
     // 添加键盘事件支持
