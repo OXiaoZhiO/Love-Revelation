@@ -4,67 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>私密信件</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="font-sans text-dark">
-    <div id="password-container" class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="w-full max-w-md">
-            <div class="text-center mb-8 fade-in">
-                <div class="envelope inline-block mb-4">
-                    <i class="fa fa-envelope-o text-6xl text-primary/80"></i>
-                </div>
-                <h1 class="text-[clamp(1.8rem,5vw,2.5rem)] font-serif font-bold text-dark mb-2">私密信件</h1>
-                <p class="text-secondary text-lg">请输入密码以查看内容</p>
-            </div>
-            
-            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 transform transition-all duration-500 hover:shadow-xl fade-in" style="animation-delay: 0.2s">
-                <form id="password-form" class="space-y-6">
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-secondary mb-2">密码</label>
-                        <div class="relative">
-                            <input type="password" id="password" class="password-input w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" placeholder="请输入密码" required>
-                            <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
-                                <i class="fa fa-eye-slash"></i>
-                            </button>
-                        </div>
+<body>
+    <div class="container">
+        <div id="login-section" class="section active">
+            <div class="login-card">
+                <h2 class="login-title">请输入密码</h2>
+                <p class="login-description">这是一封受保护的私密信件，请输入正确密码以查看内容。</p>
+                <form id="password-form" class="login-form">
+                    <div class="input-group">
+                        <input type="password" id="password" class="password-input" placeholder="请输入密码" required>
+                        <button type="button" id="toggle-visibility" class="toggle-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
                     </div>
-                    
-                    <div id="error-message" class="hidden text-red-500 text-sm mt-2">
-                        <i class="fa fa-exclamation-circle mr-1"></i>
-                        <span>密码错误，请重试</span>
-                    </div>
-                    
-                    <button type="submit" id="submit-btn" class="btn-submit w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-all flex items-center justify-center">
-                        <span>解锁信件</span>
-                        <div id="loader" class="loader ml-3 hidden"></div>
-                    </button>
+                    <button type="submit" class="login-btn">解锁信件</button>
                 </form>
-            </div>
-            
-            <div class="text-center mt-6 text-sm text-secondary/80 fade-in" style="animation-delay: 0.4s">
-                <p>这是一封受保护的私密信件</p>
+                <p id="error-message" class="error-message"></p>
             </div>
         </div>
-    </div>
-    
-    <div id="letter-container" class="hidden min-h-screen p-4 md:p-8 lg:p-12">
-        <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden">
-            <div class="bg-primary/5 p-6 md:p-8 border-b border-gray-100">
-                <h2 class="text-2xl md:text-3xl font-serif font-bold text-dark">私密信件</h2>
-                <p class="text-secondary mt-1">已加密保护</p>
-            </div>
-            
-            <div class="letter-container p-6 md:p-10 min-h-[60vh]">
-                <div id="letter-content" class="prose prose-lg max-w-none font-serif text-gray-700 leading-relaxed">
-                    <!-- 信件内容将在这里显示 -->
-                </div>
-            </div>
-            
-            <div class="bg-gray-50 p-6 md:p-8 border-t border-gray-100 text-center text-sm text-secondary">
-                <p>信件已成功解锁并显示</p>
+        
+        <div id="letter-section" class="section">
+            <div class="letter-container">
+                <h2 class="letter-title">私密信件</h2>
+                <div id="letter-content" class="letter-content"></div>
+                <button id="back-btn" class="back-btn">返回</button>
             </div>
         </div>
     </div>
