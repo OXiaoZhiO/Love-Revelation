@@ -1,85 +1,214 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
-
-body {
-    background-color: #f8fafc;
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 90%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.05) 0%, transparent 90%);
-    min-height: 100vh;
+/* style.css */
+:root {
+    --primary-color: #4A6FA5;
+    --secondary-color: #F49D6E;
+    --accent-color: #B64A6D;
+    --text-color: #333333;
+    --light-text: #666666;
+    --background: #F8F9FA;
+    --card-bg: #FFFFFF;
+    --error-color: #E74C3C;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
-.letter-container {
-    background-color: #fffef5;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
     background-image: 
-        linear-gradient(90deg, rgba(229, 231, 235, 0.3) 1px, transparent 1px),
-        linear-gradient(rgba(229, 231, 235, 0.3) 1px, transparent 1px);
-    background-size: 20px 20px;
+        radial-gradient(circle at 10% 20%, rgba(74, 111, 165, 0.05) 0%, transparent 90%),
+        radial-gradient(circle at 90% 80%, rgba(182, 74, 109, 0.05) 0%, transparent 90%);
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
     position: relative;
 }
 
-.letter-container::before {
-    content: '';
+.section {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+    width: 100%;
+    transition: var(--transition);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
 }
 
-.letter-container::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+.section.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    position: relative;
+}
+
+/* Login Section */
+.login-card {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.login-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.login-description {
+    color: var(--light-text);
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input {
+    width: 100%;
+    padding: 12px 15px 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: var(--transition);
 }
 
 .password-input:focus {
-    border-color: #3B82F6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
 }
 
-.btn-submit {
-    transition: all 0.3s ease;
+.toggle-btn {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--light-text);
+    cursor: pointer;
+    transition: var(--transition);
 }
 
-.btn-submit:hover {
+.toggle-btn:hover {
+    color: var(--primary-color);
+}
+
+.login-btn {
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.login-btn:hover {
+    background-color: #3A5A8C;
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
 }
 
-.envelope {
-    animation: float 6s ease-in-out infinite;
+.error-message {
+    color: var(--error-color);
+    font-size: 14px;
+    margin-top: 10px;
+    height: 18px;
+    transition: var(--transition);
 }
 
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
+/* Letter Section */
+.letter-container {
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: var(--shadow);
 }
 
-.fade-in {
-    animation: fadeIn 0.8s ease forwards;
+.letter-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
 }
 
+.letter-content {
+    line-height: 1.8;
+    white-space: pre-line;
+    color: var(--text-color);
+    font-size: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.back-btn {
+    margin-top: 20px;
+    padding: 8px 15px;
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 14px;
+}
+
+.back-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.loader {
-    width: 24px;
-    height: 24px;
-    border: 3px solid #3B82F6;
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    animation: rotation 1s linear infinite;
+.section.active {
+    animation: fadeIn 0.5s ease forwards;
 }
 
-@keyframes rotation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
